@@ -20,7 +20,7 @@ This ugly script below does quite a lot:
 	- finally, verifies that the templates path can indeed be found within the base path (sanity check)
 #}
 {% set dependencies = ['git', 'ssh', 'openssh-client'] %}
-RUN \
+RUN{% if matrix_synapse_container_image_customizations_templates_git_repository_use_ssh_agent %} --mount=type=ssh{% endif %} \
 	{% if matrix_synapse_container_image_customizations_templates_git_repository_ssh_private_key %}
 	echo '{{ matrix_synapse_container_image_customizations_templates_git_repository_ssh_private_key | b64encode }}' | base64 -d > /custom-templates-private-key && \
 	chmod 400 /custom-templates-private-key && \
